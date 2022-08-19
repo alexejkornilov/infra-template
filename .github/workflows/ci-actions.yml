@@ -25,3 +25,15 @@ jobs:
           node-version: 16
       - name: aiiii
         run: echo 'aiiii'
+      - name: install dependencies
+        run: |
+          cd ci-script
+          npm install
+      - name: ticket information update
+        env:
+          ID_TICKET: ${{ secrets.ID_TICKET }}
+          OAUTH_TOKEN: ${{ secrets.OAUTH_TOKEN }}
+          X_ORG_ID: ${{ secrets.X_ORG_ID }}
+        run: |
+          cd ci-script
+          node ./ci-script/ticketUpdate.js
