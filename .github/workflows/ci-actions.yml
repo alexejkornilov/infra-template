@@ -36,4 +36,4 @@ jobs:
           X_ORG_ID: ${{ secrets.X_ORG_ID }}
         run: |
           cd ci-script
-          node ./ci-script/ticketUpdate.js
+          node ticketUpdate.js
