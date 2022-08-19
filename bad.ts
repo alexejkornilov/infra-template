@@ -1,5 +1,5 @@
-let a = (asd) => {
-    asd.map((i, in) => {
-        return i;
-    })
+let a = (asd: any[]):void => {
+
 }
+
+a([]);
