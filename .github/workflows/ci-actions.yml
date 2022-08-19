@@ -24,3 +24,4 @@ jobs:
         with:
           node-version: 16
       - name: aiiii
+        run: echo 'aiiii'
