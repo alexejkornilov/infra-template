@@ -1,6 +1,7 @@
 import * as github from "@actions/github";
 import * as core from "@actions/core";
 import fetch from 'node-fetch';
+import {exec} from "@actions/exec";
 
 const {ID_TICKET, OAUTH_TOKEN, X_ORG_ID} = process.env;
 
@@ -13,12 +14,16 @@ const runForestRun = async () => {
             const currentMaintenance = relNumber.split('.').pop();
             const prevMaintenance = currentMaintenance - 1;
 
+            const commitLogFilter = Number(currentMaintenance) === 1 ? `rc-0.0.${currentMaintenance}` : `rc-0.0.${prevMaintenance}...rc-0.0.${currentMaintenance}`
+
+            const includeCommits = getCommitLog(['log', commitLogFilter])
+
             const currentDate = getFormatData(new Date());
 
             const pushName = github.context.payload.pusher?.name;
 
             const summary = `Релиз №${relNumber} от ${currentDate}`;
-            const description = `ответственный за релиз ${pushName}\n\nкоммиты, попавшие в релиз:`
+            const description = `ответственный за релиз ${pushName}\n\nкоммиты, попавшие в релиз:${includeCommits}`
 
 
             await fetch(`https://api.tracker.yandex.net/v2/issues/${ID_TICKET}`, {
@@ -50,6 +55,28 @@ const getFormatData = (date) => {
     day = day.length > 1 ? day : '0' + day;
 
     return month + '/' + day + '/' + year;
+}
+
+const getCommitLog = async (args) => {
+    let result = '';
+    let resultError = '';
+
+    await exec.exec('git', args, {
+        listeners: {
+            stdout: (data) => {
+                result += data.toString();
+            },
+            stderr: (data) => {
+                resultError += data.toString();
+            },
+        }
+    });
+
+    if (resultError !== '') {
+        core.setFailed(resultError)
+    }
+
+    return result;
 }
 runForestRun().then(_ => console.log('ticket must update'))
 console.log(github.context.ref)
