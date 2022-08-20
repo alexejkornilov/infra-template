@@ -1,5 +1,9 @@
 name: ci-ations
 on:
+  workflow_run:
+    workflows: [ "lint" ]
+    types:
+      - completed
   push:
     tags:
       - 'rc-[0-9]+.[0-9]+.[0-9]+'
