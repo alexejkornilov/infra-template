@@ -61,7 +61,7 @@ const getCommitLog = async (args) => {
     let result = '';
     let resultError = '';
 
-    await exec.exec('git', args, {
+    await exec('git', args, {
         listeners: {
             stdout: (data) => {
                 result += data.toString();
