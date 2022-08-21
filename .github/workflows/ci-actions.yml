@@ -23,8 +23,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: aiiii
-        run: echo 'aiiii'
       - name: install dependencies
         run: |
           cd ci-script
@@ -37,3 +35,13 @@ jobs:
         run: |
           cd ci-script
           node ticketUpdate.js
+      - name: create docker image
+        env:
+          ID_TICKET: ${{ secrets.ID_TICKET }}
+          OAUTH_TOKEN: ${{ secrets.OAUTH_TOKEN }}
+          X_ORG_ID: ${{ secrets.X_ORG_ID }}
+        run: |
+          cd ci-script
+          node createImage.js
+      - name: well done
+        run: echo well done

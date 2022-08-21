@@ -16,15 +16,15 @@ const runForestRun = async () => {
 
             const commitLogFilter = Number(currentMaintenance) === 1 ? `rc-0.0.${currentMaintenance}` : `rc-0.0.${prevMaintenance}...rc-0.0.${currentMaintenance}`
 
-            const includeCommits = getCommitLog(['log', commitLogFilter])
+            const includeCommits = getCommitLog(['log', '--pretty=format:"%H %an %s"', commitLogFilter]).replace(/"/g, '');
 
+            core.info('get message log')
             const currentDate = getFormatData(new Date());
 
             const pushName = github.context.payload.pusher?.name;
 
             const summary = `Релиз №${relNumber} от ${currentDate}`;
             const description = `ответственный за релиз ${pushName}\n\nкоммиты, попавшие в релиз:${includeCommits}`
-
 
             await fetch(`https://api.tracker.yandex.net/v2/issues/${ID_TICKET}`, {
                 method: "PATCH",
@@ -37,9 +37,10 @@ const runForestRun = async () => {
                     description,
                 })
             });
+
+            core.info('update ticket')
+
         }
-
-
     } catch (e) {
         core.setFailed(e.message)
     }
@@ -78,5 +79,8 @@ const getCommitLog = async (args) => {
 
     return result;
 }
-runForestRun().then(_ => console.log('ticket must update'))
-console.log(github.context.ref)
+runForestRun().then(_ => {
+    console.log('ticket must update')
+    core.info('ticket must update')
+
+})
