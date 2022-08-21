@@ -26,7 +26,7 @@ const runForestRun = async () => {
             const pushName = github.context.payload.pusher?.name;
 
             const summary = `Релиз №${relNumber} от ${currentDate}`;
-            const description = `ответственный за релиз ${pushName}\n\n---\n\nкоммиты, попавшие в релиз:\n\n${includeCommits}`
+            const description = `Ответственный за релиз ${pushName}\n\n---\n\nКоммиты, попавшие в релиз:\n\n${includeCommits}`
 
             await fetch(`https://api.tracker.yandex.net/v2/issues/${ID_TICKET}`, {
                 method: "PATCH",

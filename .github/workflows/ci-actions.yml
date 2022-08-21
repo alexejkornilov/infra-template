@@ -42,8 +42,6 @@ jobs:
           ID_TICKET: ${{ secrets.ID_TICKET }}
           OAUTH_TOKEN: ${{ secrets.OAUTH_TOKEN }}
           X_ORG_ID: ${{ secrets.X_ORG_ID }}
-        run: |
-          cd ci-script
-          node createImage.js
+        run: node ci-script/createImage.js
       - name: well done
         run: echo well done
