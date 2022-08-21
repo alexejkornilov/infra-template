@@ -16,7 +16,7 @@ const makeMeImage = async () => {
             core.info('image create')
 
             await fetch(`https://api.tracker.yandex.net/v2/issues/${ID_TICKET}/comments`, {
-                method: "PATCH",
+                method: "POST",
                 headers: {
                     Authorization: `OAuth ${OAUTH_TOKEN}`,
                     "X-Org-ID": X_ORG_ID,
