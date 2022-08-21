@@ -16,7 +16,11 @@ const runForestRun = async () => {
 
             const commitLogFilter = Number(currentMaintenance) === 1 ? `rc-0.0.${currentMaintenance}` : `rc-0.0.${prevMaintenance}...rc-0.0.${currentMaintenance}`
 
-            const includeCommits = getCommitLog(['log', '--pretty=format:"%H %an %s"', commitLogFilter]).replace(/"/g, '');
+            const includeCommitsRaw1= await getCommitLog(['tag']);
+            console.log(includeCommitsRaw1)
+            const includeCommitsRaw = await getCommitLog(['log', '--pretty=format:"%H %an %s"', commitLogFilter]);
+
+            const includeCommits = includeCommitsRaw.replace(/"/g, '');
 
             core.info('get message log')
             const currentDate = getFormatData(new Date());
