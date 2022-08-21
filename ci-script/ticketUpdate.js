@@ -16,8 +16,6 @@ const runForestRun = async () => {
 
             const commitLogFilter = Number(currentMaintenance) === 1 ? `rc-0.0.${currentMaintenance}` : `rc-0.0.${prevMaintenance}...rc-0.0.${currentMaintenance}`
 
-            const includeCommitsRaw1= await getCommitLog(['tag']);
-            console.log(includeCommitsRaw1)
             const includeCommitsRaw = await getCommitLog(['log', '--pretty=format:"%H %an %s"', commitLogFilter]);
 
             const includeCommits = includeCommitsRaw.replace(/"/g, '');
@@ -28,7 +26,7 @@ const runForestRun = async () => {
             const pushName = github.context.payload.pusher?.name;
 
             const summary = `Релиз №${relNumber} от ${currentDate}`;
-            const description = `ответственный за релиз ${pushName}\n\nкоммиты, попавшие в релиз:${includeCommits}`
+            const description = `ответственный за релиз ${pushName}\n\n---\n\nкоммиты, попавшие в релиз:\n\n${includeCommits}`
 
             await fetch(`https://api.tracker.yandex.net/v2/issues/${ID_TICKET}`, {
                 method: "PATCH",

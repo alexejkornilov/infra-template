@@ -11,6 +11,7 @@ const makeMeImage = async () => {
         if (regex.test(github.context.ref)) {
             const relNumber = github.context.ref.match(regex).shift();
 
+            await exec('cd', ['..']);
             await exec('docker', ['build', '-t', `rc:${relNumber}`, '.']);
 
             core.info('image create')
