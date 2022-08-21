@@ -22,7 +22,7 @@ const makeMeImage = async () => {
                     "X-Org-ID": X_ORG_ID,
                 },
                 body: JSON.stringify({
-                    text: `Собрали образ в тегом rc:${relNumfber}`
+                    text: `Собрали образ в тегом rc:${relNumber}`
                 })
             });
 
